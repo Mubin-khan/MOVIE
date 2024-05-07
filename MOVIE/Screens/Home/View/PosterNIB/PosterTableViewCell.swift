@@ -11,7 +11,6 @@ class PosterTableViewCell: UITableViewCell {
 
     var data : MovieModel?
     let listcollectionviewcellIdentifier = "PosterCollectionViewCell"
-    var currentRow = 1
     
     lazy var titleLabel : UILabel = {
         let lb = UILabel()
@@ -85,8 +84,9 @@ extension PosterTableViewCell : UICollectionViewDelegateFlowLayout, UICollection
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listcollectionviewcellIdentifier, for: indexPath) as? PosterCollectionViewCell {
             
+            cell.posterImageView.image = nil
             if let data {
-                cell.posterImageView.image = nil
+                print(data.results[indexPath.row].originalTitle)
                 cell.loader.startAnimating()
                 let urlString = NetworkConstant.shared.getImageUrl(path: data.results[indexPath.row].posterPath)
                 cell.posterImageView.cacheImage(urlString: urlString){

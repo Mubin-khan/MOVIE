@@ -20,6 +20,10 @@ class HomeViewController: UIViewController {
         return vw
     }()
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,6 +33,11 @@ class HomeViewController: UIViewController {
        
         setUpView()
         setupTableView()
+        
+        self.title = "MOVIE"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
     private func setUpView(){
@@ -71,9 +80,16 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         default :
             if let cell = tableView.dequeueReusableCell(withIdentifier: posterViewCellIdentifier, for: indexPath) as? PosterTableViewCell {
                 
-                if let movie = viewModel.allMovies[selectedGenreId] {
-                    cell.setupCell(data: movie, rowNumber : indexPath.row)
+                if indexPath.row == 1 {
+                    if let movie = viewModel.allMovies[selectedGenreId] {
+                        cell.setupCell(data: movie, rowNumber : indexPath.row)
+                    }
+                }else {
+                    if let movie = viewModel.popularMovies[selectedGenreId] {
+                        cell.setupCell(data: movie, rowNumber : indexPath.row)
+                    }
                 }
+               
             return cell
         }
         }
@@ -108,6 +124,9 @@ extension HomeViewController : MovieViewModelProtocol {
             if let data = viewModel.allMovies[genreId] {
                 cell.setupCell(data: data, rowNumber: 1)
                 cell.collectionView.reloadData()
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) {
+                    cell.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
+                }
             }
         }
     }
@@ -117,6 +136,9 @@ extension HomeViewController : MovieViewModelProtocol {
             if let data = viewModel.popularMovies[genreId] {
                 cell.setupCell(data: data, rowNumber: 2)
                 cell.collectionView.reloadData()
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) {
+                    cell.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
+                }
             }
         }
     }
