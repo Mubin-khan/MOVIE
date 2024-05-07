@@ -16,6 +16,7 @@ class MovieListTableViewCell: UITableViewCell {
     weak var movieDelegate : MovieCategoryProtocol?
     var data : GenreModel?
     let listcollectionviewcellIdentifier = "MovieListCollectionViewCell"
+    var lastSelectedIndex = 0
     
     lazy var collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout.init()
@@ -73,6 +74,14 @@ extension MovieListTableViewCell : UICollectionViewDelegateFlowLayout, UICollect
             
             if let data {
                 cell.titleLabel.text = data.genres[indexPath.row].name
+                
+                if lastSelectedIndex == indexPath.row{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                        cell.isSelected = true
+                    }
+                }else {
+                    cell.isSelected = false
+                }
             }
             return cell
         }
@@ -97,5 +106,11 @@ extension MovieListTableViewCell : UICollectionViewDelegateFlowLayout, UICollect
         if let data = data?.genres {
             movieDelegate?.loadMovies(category: data[indexPath.row].id)
         }
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        if let cell = collectionView.cellForItem(at: IndexPath(row: lastSelectedIndex, section: 0)) as? MovieListCollectionViewCell {
+            cell.isSelected = false
+        }
+        
+        lastSelectedIndex = indexPath.row
     }
 }

@@ -17,11 +17,25 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         return lb
     }()
     
+    lazy var bgView : UIView = {
+        let vw = UIView()
+        vw.layer.cornerRadius = 3
+        return vw;
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.backgroundColor = .clear
+
+        contentView.addSubview(bgView)
         contentView.addSubview(titleLabel)
+        bgView.translatesAutoresizingMaskIntoConstraints = false
+        bgView.leftAnchor.constraint(equalTo: titleLabel.leftAnchor, constant: -8).isActive = true
+        bgView.rightAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: 8).isActive = true
+        bgView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -4).isActive = true
+        bgView.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
@@ -31,4 +45,13 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                bgView.backgroundColor = .magenta
+            }else {
+                bgView.backgroundColor = .clear
+            }
+        }
+    }
 }

@@ -15,7 +15,7 @@ class PosterTableViewCell: UITableViewCell {
     
     lazy var titleLabel : UILabel = {
         let lb = UILabel()
-        lb.text = "Popular Movies"
+        lb.text = "Most Popular"
         lb.textColor = .white
         lb.font = .systemFont(ofSize: 18, weight: .bold)
         return lb
