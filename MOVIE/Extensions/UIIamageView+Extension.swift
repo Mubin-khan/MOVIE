@@ -9,15 +9,12 @@ import UIKit
 
 let imageCache = NSCache<AnyObject, AnyObject>()
 
-extension UIImageView {
-    func cacheImage(urlString: String, completion : @escaping() -> ()){
-    let url = URL(string: urlString)
+extension String{
+    func cacheImage(completion : @escaping(_ img : UIImage?) -> ()){
+    let url = URL(string: self)
     
-    image = nil
-    
-    if let imageFromCache = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
-        self.image = imageFromCache
-        completion()
+    if let imageFromCache = imageCache.object(forKey: self as AnyObject) as? UIImage {
+        completion(imageFromCache)
         return
     }
         
@@ -25,11 +22,15 @@ extension UIImageView {
         data, response, error in
           if let response = data {
               DispatchQueue.main.async {
-                  let imageToCache = UIImage(data: response)
-                  completion()
-                  imageCache.setObject(imageToCache!, forKey: urlString as AnyObject)
-                  self.image = imageToCache
+                  if let imageToCache = UIImage(data: response) {
+                      imageCache.setObject(imageToCache, forKey: self as AnyObject)
+                      completion(imageToCache)
+                  }else {
+                      completion(nil)
+                  }
               }
+          }else {
+              completion(nil)
           }
      }.resume()
   }

@@ -62,7 +62,6 @@ class MovieViewModel {
                 case .success(let res) :
                     allMovies[genreId] = res
                     delegate?.reloadAllMovies(genreId: genreId)
-                    print("\(res) kdkkdkkdkdkke")
                 case .failure(let er) :
                     delegate?.failedWith(error: er)
                 }
@@ -81,7 +80,6 @@ class MovieViewModel {
                 case .success(let res) :
                     popularMovies[genreId] = res
                     delegate?.reloadPopularMovies(genreId: genreId)
-                    print("\(res) kdkkdkkdkdkkd")
                 case .failure(let er) :
                     delegate?.failedWith(error: er)
                 }

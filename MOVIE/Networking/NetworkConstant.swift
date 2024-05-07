@@ -36,7 +36,7 @@ class NetworkConstant {
     }
     
     public func getMoviePath(pageNumber : Int, genreId : Int) -> String {
-        "\(serverAddress)discover/movie?api_key=\(apiKey)&language=en-US&include_adult=false&include_video=false&page=\(pageNumber)&with_genres=\(genreId)"
+        "\(serverAddress)discover/movie?api_key=\(apiKey)&language=en-US&sort_by=release_date.desc&include_adult=false&include_video=false&page=\(pageNumber)&with_genres=\(genreId)"
     }
     
     public func getPopularMoviePath(pageNumber : Int, genreId : Int) -> String {

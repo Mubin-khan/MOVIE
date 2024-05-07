@@ -11,7 +11,7 @@ import Foundation
 struct MovieModel: Codable {
     let page: Int
     let results: [MovieDiscriptionModel]
-    let totalPages, totalResults: Int
+    let totalPages, totalResults: Int?
 
     enum CodingKeys: String, CodingKey {
         case page, results
@@ -22,16 +22,17 @@ struct MovieModel: Codable {
 
 // MARK: - Result
 struct MovieDiscriptionModel: Codable {
-    let adult: Bool
+    let adult: Bool?
     let backdropPath: String?
     let genreIDS: [Int]
     let id: Int
-    let originalLanguage, originalTitle, overview: String
-    let popularity: Double
-    let posterPath, releaseDate, title: String
-    let video: Bool
-    let voteAverage: Double
-    let voteCount: Int
+    let originalLanguage, originalTitle, overview: String?
+    let popularity: Double?
+    let posterPath, releaseDate : String?
+    let title: String?
+    let video: Bool?
+    let voteAverage: Double?
+    let voteCount: Int?
 
     enum CodingKeys: String, CodingKey {
         case adult

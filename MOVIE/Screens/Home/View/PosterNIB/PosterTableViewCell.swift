@@ -16,6 +16,7 @@ class PosterTableViewCell: UITableViewCell {
         let lb = UILabel()
         lb.text = "Most Popular"
         lb.textColor = .white
+        lb.tintColor = .clear
         lb.font = .systemFont(ofSize: 18, weight: .bold)
         return lb
     }()
@@ -84,13 +85,20 @@ extension PosterTableViewCell : UICollectionViewDelegateFlowLayout, UICollection
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listcollectionviewcellIdentifier, for: indexPath) as? PosterCollectionViewCell {
             
-            cell.posterImageView.image = nil
+            cell.posterImageView.image = UIImage(named: "noImage")
             if let data {
-                print(data.results[indexPath.row].originalTitle)
                 cell.loader.startAnimating()
-                let urlString = NetworkConstant.shared.getImageUrl(path: data.results[indexPath.row].posterPath)
-                cell.posterImageView.cacheImage(urlString: urlString){
+                let urlString = NetworkConstant.shared.getImageUrl(path: data.results[indexPath.row].posterPath ?? "")
+                if let img = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
+                    cell.posterImageView.image = img
                     cell.loader.stopAnimating()
+                }else {
+                    urlString.cacheImage { img in
+                        if (img != nil) {
+                            collectionView.reloadItems(at: [indexPath])
+                        }
+                        cell.loader.stopAnimating()
+                    }
                 }
             }
             return cell
